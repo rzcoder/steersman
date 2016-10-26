@@ -32,7 +32,9 @@ export {
     IRouterOptions,
     IRouterNavigateOptions,
     IRouteTransitionResult,
-    IRouteCancelableTransitionResult
+    IRouteCancelableTransitionResult,
+    IRouteTransitionPromiseResult,
+    IRouteCancelableTransitionPromiseResult
 } from "./types";
 
 export class Router implements IRouter {
