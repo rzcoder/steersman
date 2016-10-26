@@ -1,5 +1,6 @@
 import { IRouter, IRoute, IRouteTemplate, RouterContext, MappingFunction, IRouterOptions, IRouterNavigateOptions } from "./types";
 export { Route } from "./Route";
+export { IRouter, IRoute, IRouteParameters, IRouterOptions, IRouterNavigateOptions } from "./types";
 export declare class Router implements IRouter {
     private options;
     private routes;
