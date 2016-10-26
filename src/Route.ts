@@ -2,8 +2,8 @@ import {
     IRoute,
     IRouteParameters,
     IRouteInfo,
-    IRouteTransitionResult,
-    IRouteCancelableTransitionResult
+    IRouteTransitionPromiseResult,
+    IRouteCancelableTransitionPromiseResult
 } from "./types";
 
 export class Route implements IRoute {
@@ -15,20 +15,20 @@ export class Route implements IRoute {
         this.routeInfo = routeInfo;
     }
 
-    beforeExit(newRoute: IRoute): Promise<IRouteCancelableTransitionResult> { // tslint:disable-line
-        return Promise.resolve({});
+    beforeExit(newRoute: IRoute): IRouteCancelableTransitionPromiseResult { // tslint:disable-line
+        return;
     }
 
-    beforeEnter(): Promise<IRouteCancelableTransitionResult> {
-        return Promise.resolve({});
+    beforeEnter(): IRouteCancelableTransitionPromiseResult {
+        return;
     }
 
-    onExit(newRoute: IRoute): Promise<IRouteTransitionResult> { // tslint:disable-line
-        return Promise.resolve({});
+    onExit(newRoute: IRoute): IRouteTransitionPromiseResult { // tslint:disable-line
+        return;
     }
 
-    onEnter(): Promise<IRouteTransitionResult> {
-        return Promise.resolve({});
+    onEnter(): IRouteTransitionPromiseResult {
+        return;
     }
 
     onCancelEnterTransition(reason: Error): void { // tslint:disable-line
