@@ -15,7 +15,14 @@ import {
     IRouterNavigateOptions
 } from "./types";
 
-import {RedirectedError} from "./Errors";
+import {
+    TransitionError,
+    CancellationError,
+    InterceptedError,
+    ReplacedError,
+    RedirectedError
+} from './Errors';
+
 import {RouteParser} from "./Parser";
 import {RouteMapper} from "./Mapper";
 import {Transitor} from "./Transitor";
@@ -129,6 +136,12 @@ export class Router implements IRouter {
                         this.navigate(e.redirectOptions.url, {
                             replace: e.redirectOptions.replace
                         });
+                    } else if (
+                        e instanceof CancellationError ||
+                        e instanceof InterceptedError ||
+                        e instanceof ReplacedError
+                    ) {
+                        // do nothing
                     } else {
                         throw e;
                     }
