@@ -1,0 +1,32 @@
+{
+  "name": "steersman",
+  "version": "0.0.1",
+  "description": "Lightweight JS router for browsers & node",
+  "main": "lib/router.js",
+  "typings": "lib/router.d.ts",
+  "author": "rzcoder",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rzcoder/steersman.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rzcoder/steersman/issues"
+  },
+  "keywords": [
+    "router",
+    "javascript",
+    "navigate"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha",
+    "-pretest": "tslint --project ./"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {}
+}
