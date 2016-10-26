@@ -31,16 +31,18 @@ export interface IRouteInfo {
     context?: RouterContext;
 }
 export interface IRouteParameters {
-    [key: string]: string | number | boolean;
+    [key: string]: string;
 }
 export interface IRouteConstructable {
     new (parameters: IRouteParameters, routeInfo: IRouteInfo): IRoute;
 }
+export declare type IRouteTransitionPromiseResult = Promise<IRouteTransitionResult> | undefined;
+export declare type IRouteCancelableTransitionPromiseResult = Promise<IRouteCancelableTransitionResult> | undefined;
 export interface IRoute {
-    beforeExit(newRoute: IRoute): Promise<IRouteCancelableTransitionResult>;
-    beforeEnter(): Promise<IRouteCancelableTransitionResult>;
-    onExit(newRoute: IRoute): Promise<IRouteTransitionResult>;
-    onEnter(): Promise<IRouteTransitionResult>;
+    beforeExit(newRoute: IRoute): IRouteCancelableTransitionPromiseResult;
+    beforeEnter(): IRouteCancelableTransitionPromiseResult;
+    onExit(newRoute: IRoute): IRouteTransitionPromiseResult;
+    onEnter(): IRouteTransitionPromiseResult;
     onCancelEnterTransition(reason: Error): void;
     onCancelExitTransition(reason: Error): void;
 }
