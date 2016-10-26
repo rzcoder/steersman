@@ -93,7 +93,7 @@ export interface IRouteTransitionRedirectOptions {
     replace?: boolean;
 }
 export interface IRouteTransitionResult {
-    redirected?: string | IRouteTransitionRedirectOptions;
+    redirected?: IRouteTransitionRedirectOptions;
 }
 export interface IRouteCancelableTransitionResult extends IRouteTransitionResult {
     canceled?: boolean;
