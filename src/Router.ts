@@ -25,7 +25,15 @@ import {VirtualHistory} from "./history/VirtualHistory";
 import {HashHistory} from "./history/HashHistory";
 
 export {Route} from "./Route";
-export {IRouter, IRoute, IRouteParameters, IRouterOptions, IRouterNavigateOptions} from "./types";
+export {
+    IRouter,
+    IRoute,
+    IRouteParameters,
+    IRouterOptions,
+    IRouterNavigateOptions,
+    IRouteTransitionResult,
+    IRouteCancelableTransitionResult
+} from "./types";
 
 export class Router implements IRouter {
     private options: IRouterOptions;
