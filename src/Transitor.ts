@@ -21,6 +21,9 @@ import {
     RedirectedError
 } from './Errors';
 
+class StopTransactionError extends Error {
+}
+
 class Transition implements ITransition {
     private parent: ITransitor;
     private _oldRoute: IRoute;
@@ -28,7 +31,7 @@ class Transition implements ITransition {
     private _state: TransitionState;
     private _canceled: string | boolean;
     private _promise: Promise<void>;
-    private _promiseResolve: () => void;
+    private _promiseResolve: (err?: Error) => void;
     private _promiseReject: (reason: any) => void;
 
     get oldRoute(): IRoute {
@@ -63,7 +66,7 @@ class Transition implements ITransition {
         this._newRoute = newRoute;
         this._canceled = false;
 
-        this._promise = new Promise((resolve, reject) => {
+        this._promise = new Promise<Error>((resolve, reject) => {
             this._promiseResolve = resolve;
             this._promiseReject = reject;
         });
@@ -73,12 +76,32 @@ class Transition implements ITransition {
         }
     }
 
+    private stop(reason: Error) {
+        if (reason instanceof ReplacedError) {
+            this._promiseReject(reason);
+        } else if (reason instanceof InterceptedError) {
+            this._state = TransitionState.Intercepted;
+        } else if (reason instanceof CancellationError) {
+            this._state = TransitionState.Cancelled;
+        } else if (reason instanceof RedirectedError) {
+            this._state = TransitionState.Redirected;
+        }
+
+        if (this.state === TransitionState.InOldRoute && this.oldRoute && !(reason instanceof ReplacedError)) {
+            this.oldRoute.onCancelExitTransition(reason);
+        }
+        this.newRoute.onCancelEnterTransition(reason);
+        this._promiseResolve(reason);
+    }
+
     private interceptTransition(transitionResult?: RouteTransitionResult) {
         if (this.canceled) {
             if (this.inProgress && this.state !== TransitionState.Started) {
-                throw new InterceptedError("Intercepted: " + this._canceled);
+                this.stop(new InterceptedError("Intercepted: " + this._canceled));
+                throw new StopTransactionError();
             } else {
-                throw new ReplacedError("Replaced: " + this._canceled);
+                this.stop(new ReplacedError("Replaced: " + this._canceled));
+                throw new StopTransactionError();
             }
         }
 
@@ -87,11 +110,12 @@ class Transition implements ITransition {
         }
 
         if ((<IRouteCancelableTransitionResult>transitionResult).canceled) {
-            throw new CancellationError("Canceled by route");
+            this.stop(new CancellationError("Canceled by route"));
+            throw new StopTransactionError();
         }
-
         if (transitionResult.redirected) {
-            throw new RedirectedError("Redirected by route", transitionResult.redirected);
+            this.stop(new RedirectedError("Redirected by route", transitionResult.redirected));
+            throw new StopTransactionError();
         }
     }
 
@@ -131,34 +155,8 @@ class Transition implements ITransition {
             this._state = TransitionState.Ended;
             this._promiseResolve();
         }).catch((e: Error) => {
-            if (e instanceof ReplacedError) {
-                this._state = TransitionState.Replaced;
-                this.newRoute.onCancelEnterTransition(e);
+            if (!(e instanceof StopTransactionError)) {
                 this._promiseReject(e);
-            } else if (e instanceof InterceptedError) {
-                this._state = TransitionState.Intercepted;
-                if (this.state === TransitionState.InOldRoute && this.oldRoute) {
-                    this.oldRoute.onCancelExitTransition(e);
-                }
-                this.newRoute.onCancelEnterTransition(e);
-                this._promiseReject(e);
-            } else if (e instanceof CancellationError) {
-                this._state = TransitionState.Cancelled;
-                if (this.state === TransitionState.InOldRoute && this.oldRoute) {
-                    this.oldRoute.onCancelExitTransition(e);
-                }
-                this.newRoute.onCancelEnterTransition(e);
-                this._promiseReject(e);
-            } else if (e instanceof RedirectedError) {
-                this._state = TransitionState.Redirected;
-                if (this.state === TransitionState.InOldRoute && this.oldRoute) {
-                    this.oldRoute.onCancelExitTransition(e);
-                }
-                this.newRoute.onCancelEnterTransition(e);
-                this._promiseReject(e);
-            } else {
-                this._promiseReject(e);
-                throw e;
             }
         });
     }

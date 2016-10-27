@@ -86,7 +86,7 @@ export interface ITransition {
     oldRoute: IRoute;
     newRoute: IRoute;
     inProgress: boolean;
-    promise: Promise<void>;
+    promise: Promise<Error>;
     start(): void;
     cancel(reason: string): void;
 }

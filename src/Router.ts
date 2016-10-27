@@ -131,19 +131,15 @@ export class Router implements IRouter {
                     context: this.context
                 }));
 
-                transition.promise.catch((e) => {
-                    if (e instanceof RedirectedError) {
-                        this.navigate(e.redirectOptions.url, {
-                            replace: e.redirectOptions.replace
+                transition.promise.then((reason: Error) => {
+                    if (reason) {
+                        return;
+                    }
+
+                    if (reason instanceof RedirectedError) {
+                        this.navigate(reason.redirectOptions.url, {
+                            replace: reason.redirectOptions.replace
                         });
-                    } else if (
-                        e instanceof CancellationError ||
-                        e instanceof InterceptedError ||
-                        e instanceof ReplacedError
-                    ) {
-                        // do nothing
-                    } else {
-                        throw e;
                     }
                 });
 

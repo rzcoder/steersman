@@ -1,6 +1,6 @@
 {
   "name": "steersman",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Lightweight JS router for browsers & node",
   "main": "lib/router.js",
   "typings": "lib/router.d.ts",
