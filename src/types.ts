@@ -53,6 +53,8 @@ export type IRouteTransitionPromiseResult = Promise<IRouteTransitionResult> | un
 export type IRouteCancelableTransitionPromiseResult = Promise<IRouteCancelableTransitionResult> | undefined;
 
 export interface IRoute {
+    parameters: IRouteParameters;
+    routeInfo: IRouteInfo;
     beforeExit(newRoute: IRoute): IRouteCancelableTransitionPromiseResult;
     beforeEnter(): IRouteCancelableTransitionPromiseResult;
     onExit(newRoute: IRoute): IRouteTransitionPromiseResult;

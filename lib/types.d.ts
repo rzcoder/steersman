@@ -39,6 +39,8 @@ export interface IRouteConstructable {
 export declare type IRouteTransitionPromiseResult = Promise<IRouteTransitionResult> | undefined;
 export declare type IRouteCancelableTransitionPromiseResult = Promise<IRouteCancelableTransitionResult> | undefined;
 export interface IRoute {
+    parameters: IRouteParameters;
+    routeInfo: IRouteInfo;
     beforeExit(newRoute: IRoute): IRouteCancelableTransitionPromiseResult;
     beforeEnter(): IRouteCancelableTransitionPromiseResult;
     onExit(newRoute: IRoute): IRouteTransitionPromiseResult;
