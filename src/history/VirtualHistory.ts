@@ -8,7 +8,7 @@ export class VirtualHistory implements IHistory {
     private history: string[] = [];
     private currentPosition: number;
 
-    get currentPath(): string {
+    public get currentPath(): string {
         if (this.currentPosition >= 0 && this.currentPosition < this.history.length) {
             return this.history[this.currentPosition];
         } else {
@@ -50,5 +50,11 @@ export class VirtualHistory implements IHistory {
                 this.onNavigate(this.currentPath);
             }
         }
+    }
+
+    public start(): void {
+    }
+
+    public stop(): void {
     }
 }

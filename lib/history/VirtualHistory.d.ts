@@ -8,4 +8,6 @@ export declare class VirtualHistory implements IHistory {
     setPath(path: string, replace: boolean): void;
     goBack(): void;
     goForward(): void;
+    start(): void;
+    stop(): void;
 }

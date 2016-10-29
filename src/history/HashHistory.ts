@@ -4,21 +4,48 @@ import {
 } from "../types";
 
 export class HashHistory implements IHistory {
+    private started: boolean;
     private onNavigate: IHistoryNavigateEvent;
 
-    currentPath: string;
+    public get currentPath(): string {
+        return location.pathname;
+    }
 
     constructor(onNavigate: IHistoryNavigateEvent) {
         this.onNavigate = onNavigate;
-        throw new Error("Not implemented");
     }
 
-    setPath(path: string, replace: boolean): void {
+    private navigate(e: Event, path?: string) {
+        this.onNavigate(path || this.currentPath);
     }
 
-    goBack(): void {
+    public setPath(path: string, replace: boolean): void {
+        if (replace) {
+            let href = location.href.replace(/#.*$/, "");
+            location.replace(href + "#" + path);
+        } else {
+            window.location.hash = "#" + path;
+        }
+        if (this.started) {
+            this.navigate(null, path);
+        }
     }
 
-    goForward(): void {
+    public goBack(): void {
+        history.back();
+    }
+
+    public goForward(): void {
+        history.forward();
+    }
+
+    public start(): void {
+        this.started = true;
+        addEventListener("hashchange", this.navigate, false);
+    }
+
+    public stop(): void {
+        this.started = false;
+        removeEventListener("hashchange", this.navigate, false);
     }
 }
