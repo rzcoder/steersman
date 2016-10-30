@@ -15,8 +15,10 @@ export class HashHistory implements IHistory {
         this.onNavigate = onNavigate;
     }
 
-    private navigate(e: Event, path?: string) {
-        this.onNavigate(path || this.currentPath);
+    private navigate(e: Event, path?: string): void {
+        if (this.started) {
+            this.onNavigate(path || this.currentPath);
+        }
     }
 
     public setPath(path: string, replace: boolean): void {
@@ -26,9 +28,7 @@ export class HashHistory implements IHistory {
         } else {
             window.location.hash = "#" + path;
         }
-        if (this.started) {
-            this.navigate(null, path);
-        }
+
     }
 
     public goBack(): void {

@@ -25,9 +25,6 @@ export class BrowserHistory implements IHistory {
         } else {
             history.replaceState(null, null, path);
         }
-        if (this.started) {
-            this.navigate(null, path);
-        }
     }
 
     public goBack(): void {
