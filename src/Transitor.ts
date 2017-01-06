@@ -91,7 +91,7 @@ class Transition implements ITransition {
             this.oldRoute.onCancelExitTransition(reason);
         }
         this.newRoute.onCancelEnterTransition(reason);
-        this._promiseReject(reason);
+        this._promiseResolve(reason);
     }
 
     private interceptTransition(transitionResult?: RouteTransitionResult) {
