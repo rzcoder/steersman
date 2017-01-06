@@ -91,7 +91,7 @@ class Transition implements ITransition {
             this.oldRoute.onCancelExitTransition(reason);
         }
         this.newRoute.onCancelEnterTransition(reason);
-        this._promiseResolve(reason);
+        this._promiseReject(reason);
     }
 
     private interceptTransition(transitionResult?: RouteTransitionResult) {
@@ -224,8 +224,10 @@ export class Transitor implements ITransitor {
         }
 
         if (this.conflictStrategy !== "notransition") {
-            transition.promise.then(() => {
-                this._currentRoute = transition.newRoute;
+            transition.promise.then((cancelReason) => {
+                if (!cancelReason) {
+                    this._currentRoute = transition.newRoute;
+                }
                 this.transitionsQueue[0] = undefined;
             });
         }
