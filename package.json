@@ -2,8 +2,8 @@
   "name": "steersman",
   "version": "0.0.9",
   "description": "Lightweight JS router for browsers & node",
-  "main": "lib/router.js",
-  "typings": "lib/router.d.ts",
+  "main": "lib/Router.js",
+  "typings": "lib/Router.d.ts",
   "author": "rzcoder",
   "license": "MIT",
   "repository": {
