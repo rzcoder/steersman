@@ -9,10 +9,12 @@ export declare class Router implements IRouter {
     private transitor;
     private history;
     private _context;
+    private _onNavigate;
     readonly currentRoute: IRoute;
     readonly inTransition: boolean;
     context: RouterContext;
     readonly mapping: IRouteTemplate[];
+    onNavigate: (oldUrl: string, newUrl: string) => void;
     constructor(options?: IRouterOptions);
     map(mappingFn: MappingFunction): void;
     navigate(path: string, options?: IRouterNavigateOptions): Promise<void>;

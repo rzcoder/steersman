@@ -53,6 +53,8 @@ export class Router implements IRouter {
     private history: IHistory;
     private _context: RouterContext;
 
+    private _onNavigate: (oldUrl: string, newUrl: string) => void;
+
     public get currentRoute(): IRoute {
         return this.transitor.currentRoute;
     }
@@ -71,6 +73,14 @@ export class Router implements IRouter {
 
     get mapping(): IRouteTemplate[] {
         return this.routes;
+    }
+
+    get onNavigate(): (oldUrl: string, newUrl: string) => void {
+        return this._onNavigate;
+    }
+
+    set onNavigate(value: (oldUrl: string, newUrl: string) => void) {
+        this._onNavigate = value;
     }
 
     constructor(options: IRouterOptions = {}) {
@@ -104,16 +114,21 @@ export class Router implements IRouter {
     public navigate(path: string, options: IRouterNavigateOptions = {}): Promise<void> {
         path = utils.normalizePath(path);
 
+        const oldPath = this.history.currentPath;
         this.history.setPath(path, options.replace);
 
         if (!options.silent) {
             return this.processPath(path);
         }
 
-        return Promise.resolve();
+        return Promise.resolve().then(() => {
+            if (this.onNavigate) {
+                this.onNavigate(oldPath, path);
+            }
+        });
     }
 
-    private processPath(path: string): Promise<void> {
+    private processPath(path: string): Promise<any> {
         for (let route of this.routes) {
             let result = path.match(route.regexp);
             if (result) {
