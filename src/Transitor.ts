@@ -30,7 +30,7 @@ class Transition implements ITransition {
     private _newRoute: IRoute;
     private _state: TransitionState;
     private _canceled: string | boolean;
-    private _promise: Promise<void>;
+    private _promise: Promise<Error>;
     private _promiseResolve: (err?: Error) => void;
     private _promiseReject: (reason: any) => void;
 
@@ -56,7 +56,7 @@ class Transition implements ITransition {
         return !!this._canceled;
     }
 
-    get promise(): Promise<void> {
+    get promise(): Promise<Error> {
         return this._promise;
     }
 
