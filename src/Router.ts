@@ -117,11 +117,15 @@ export class Router implements IRouter {
         const oldPath = this.history.currentPath;
         this.history.setPath(path, options.replace);
 
+        let result;
+
         if (!options.silent) {
-            return this.processPath(path);
+            result = this.processPath(path);
+        } else {
+            result = Promise.resolve();
         }
 
-        return Promise.resolve().then(() => {
+        return result.then(() => {
             if (this.onNavigate) {
                 this.onNavigate(oldPath, path);
             }
