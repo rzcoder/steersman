@@ -22,6 +22,7 @@ export interface IRouter {
     mapping: IRouteTemplate[];
     map(mappingFn: MappingFunction): void;
     navigate(path: string): Promise<void>;
+    testPath(path: string): boolean;
 }
 export interface IRouteInfo {
     template: string;

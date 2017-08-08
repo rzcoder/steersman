@@ -166,4 +166,13 @@ export class Router implements IRouter {
             }
         }
     }
+
+    public testPath(path: string): boolean {
+        for (let route of this.routes) {
+            if (path.match(route.regexp)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
