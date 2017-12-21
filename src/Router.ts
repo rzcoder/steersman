@@ -132,6 +132,25 @@ export class Router implements IRouter {
         });
     }
 
+    public goBack(options: IRouterNavigateOptions = {}) {
+        this.history.goBack();
+
+        const oldPath = this.history.currentPath;
+        let result;
+
+        if (!options.silent) {
+            result = this.processPath(this.history.currentPath);
+        } else {
+            result = Promise.resolve();
+        }
+
+        return result.then(() => {
+            if (this.onNavigate) {
+                this.onNavigate(oldPath, this.history.currentPath);
+            }
+        });
+    }
+
     private processPath(path: string): Promise<any> {
         for (let route of this.routes) {
             let result = path.match(route.regexp);
