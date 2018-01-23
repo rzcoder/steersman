@@ -18,7 +18,7 @@ export declare class Router implements IRouter {
     constructor(options?: IRouterOptions);
     map(mappingFn: MappingFunction): void;
     navigate(path: string, options?: IRouterNavigateOptions): Promise<void>;
-    goBack(options?: IRouterNavigateOptions): any;
+    goBack(): boolean;
     private processPath(path);
     testPath(path: string): boolean;
 }
