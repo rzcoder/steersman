@@ -27,12 +27,14 @@ export class BrowserHistory implements IHistory {
         }
     }
 
-    public goBack(): void {
+    public goBack(): boolean {
         history.back();
+        return true;
     }
 
-    public goForward(): void {
+    public goForward(): boolean {
         history.forward();
+        return true;
     }
 
     public start(): void {

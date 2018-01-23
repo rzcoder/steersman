@@ -34,21 +34,25 @@ export class VirtualHistory implements IHistory {
         }
     }
 
-    public goBack(): void {
+    public goBack(): boolean {
         if (this.currentPosition > 0) {
             this.currentPosition--;
             if (this.onNavigate) {
                 this.onNavigate(this.currentPath);
+                return true;
             }
+            return false;
         }
     }
 
-    public goForward(): void {
+    public goForward(): boolean {
         if (this.currentPosition >= 0 && this.currentPosition < this.history.length - 1) {
             this.currentPosition++;
             if (this.onNavigate) {
                 this.onNavigate(this.currentPath);
+                return true;
             }
+            return false;
         }
     }
 

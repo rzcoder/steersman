@@ -6,8 +6,8 @@ export declare class HashHistory implements IHistory {
     constructor(onNavigate: IHistoryNavigateEvent);
     private navigate(e, path?);
     setPath(path: string, replace: boolean): void;
-    goBack(): void;
-    goForward(): void;
+    goBack(): boolean;
+    goForward(): boolean;
     start(): void;
     stop(): void;
 }

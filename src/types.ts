@@ -153,8 +153,8 @@ export interface IHistoryNavigateEvent {
 export interface IHistory {
     currentPath: string;
     setPath(path: string, replace: boolean): void;
-    goBack(): void;
-    goForward(): void;
+    goBack(): boolean;
+    goForward(): boolean;
     start(): void;
     stop(): void;
 }

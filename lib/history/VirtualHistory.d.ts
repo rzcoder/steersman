@@ -6,8 +6,8 @@ export declare class VirtualHistory implements IHistory {
     readonly currentPath: string;
     constructor(onNavigate: IHistoryNavigateEvent);
     setPath(path: string, replace: boolean): void;
-    goBack(): void;
-    goForward(): void;
+    goBack(): boolean;
+    goForward(): boolean;
     start(): void;
     stop(): void;
 }
