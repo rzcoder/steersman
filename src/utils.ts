@@ -1,4 +1,4 @@
-const NORMALIZE_PATH_REGEXP = /^[\s\/]*([^\s]*?)[\s\/]*$/i;
+const NORMALIZE_PATH_REGEXP = /^[\s\/]*(.*?)[\s\/]*$/i;
 
 class InvalidPathError extends Error {
 }
