@@ -96,7 +96,14 @@ export class Router implements IRouter {
 
         switch (this.options.historyProvider) {
             case "virtual":
-                this.history = new VirtualHistory(this.processPath.bind(this));
+                this.history = new VirtualHistory((newPath: string): void => {
+                    const oldPath = this.history.currentPath;
+                    this.processPath(newPath).then(() => {
+                        if (this.onNavigate) {
+                            this.onNavigate(oldPath, newPath);
+                        }
+                    });
+                });
                 break;
             case "hash":
                 this.history = new HashHistory(this.processPath.bind(this));
